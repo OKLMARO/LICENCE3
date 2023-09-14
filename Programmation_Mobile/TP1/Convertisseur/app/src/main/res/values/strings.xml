@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Convertisseur</string>
+    <string-array name="spin">
+        <item>£</item>
+        <item>$</item>
+        <item>CHF</item>
+    </string-array>
+</resources>
+
