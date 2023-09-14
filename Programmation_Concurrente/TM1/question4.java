@@ -1,7 +1,3 @@
-class Valeur{
-    int x;
-}
-
 class question4a extends Thread{
     Valeur valeur;
 
