@@ -13,7 +13,7 @@ void cat(const char *filename) {
 
     char buffer[1024];
 
-    ssize_t Read= read(fd, buffer, sizeof(buffer));
+    ssize_t Read = read(fd, buffer, sizeof(buffer));
     write(1, buffer, Read);
     printf("\n");
     close(fd);

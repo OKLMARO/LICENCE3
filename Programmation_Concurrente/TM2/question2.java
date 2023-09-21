@@ -3,11 +3,11 @@ package Programmation_Concurrente.TM2;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class question1 implements Runnable{
+public class question2 implements Runnable{
     Valeur valeur;
     Lock l;
     
-    public question1(Lock l, Valeur valeur){
+    public question2(Lock l, Valeur valeur){
         this.l = l;
         this.valeur = valeur;
     }
@@ -27,22 +27,21 @@ class run {
         Valeur valeur = new Valeur();
         Lock l = new ReentrantLock();
 
-        question1 q1 = new question1(l, valeur);
-        question1 q2 = new question1(l, valeur);
-
-        Thread t1 = new Thread(q1);
-        Thread t2 = new Thread(q2);
+        Thread[] threads = new Thread[50];
         
-        t1.start();
-        t2.start();
-
-        try {
-            t1.join();
-            t2.join();
-        } catch (InterruptedException e) {
-            System.out.println("Interrupted");
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = new Thread(new question2(l, valeur));
+            threads[i].start();
         }
 
-        System.out.println(Thread.currentThread().getId() + " " + valeur.x);
+        for (int i = 0; i < threads.length; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                System.out.println("Interrupted");
+            }
+        }
+
+        System.out.println("x = " + valeur.x);
     }
 }
