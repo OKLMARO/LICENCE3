@@ -1,14 +1,16 @@
+import java.util.Random;
+
 import static java.lang.Thread.sleep;
 
 public class exo1 {
     public static void main(String[] args) {
-        Data d = new Data();
-        Producteur p = new Producteur(d);
+        Flag flag = new Flag();
 
-        Consommateur c1 = new Consommateur(1, d);
-        Consommateur c2 = new Consommateur(2, d);
-        Consommateur c3 = new Consommateur(3, d);
-        Consommateur c4 = new Consommateur(4, d);
+        Producteur p = new Producteur(flag);
+        Consommateur c1 = new Consommateur("1", flag);
+        Consommateur c2 = new Consommateur("2", flag);
+        Consommateur c3 = new Consommateur("3", flag);
+        Consommateur c4 = new Consommateur("4", flag);
 
         Thread t1 = new Thread(p);
         Thread t2 = new Thread(c1);
@@ -25,59 +27,70 @@ public class exo1 {
 }
 
 class Producteur implements Runnable {
-    final Data data;
+    Flag flag;
 
-    public Producteur(Data data) {
-        this.data = data;
+    public Producteur(Flag flag) {
+        this.flag = flag;
+        flag.num = 0;
     }
 
     @Override
     public void run() {
         while (true) {
-            if (data.available) {
-                try {
-                    sleep(10);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-                synchronized (data) {
-                    data.available = true;
-                    System.out.println("Producteur produit");
-                    notify();
+            try {
+                sleep(new Random().nextInt(100));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            synchronized (flag) {
+                if (!flag.flag) {
+                    flag.num++;
+                    System.out.println("Production num : " + flag.num);
+                    flag.flag = true;
+                    flag.notify();
                 }
             }
         }
-
     }
 }
 
 class Consommateur implements Runnable {
-    int id;
-    final Data data;
+    String name;
+    Flag flag;
 
-    public Consommateur(int id, Data data) {
-        this.id = id;
-        this.data = data;
+    public Consommateur(String name, Flag flag) {
+        this.name = name;
+        this.flag = flag;
     }
 
     @Override
     public void run() {
         while (true) {
-            synchronized (data) {
+            try {
+                sleep(new Random().nextInt(100));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            synchronized (flag) {
                 try {
-                    wait();
-                    data.available = false;
-                    System.out.println("Consommateur " + id + " consomme");
+                    flag.wait();
+
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
+                }
+                if (flag.flag) {
+                    System.out.println(name + " Consome : " + flag.num);
+                    flag.flag = false;
                 }
 
             }
+
         }
+
     }
 }
 
-class Data {
-    boolean available = false;
+class Flag {
+    boolean flag = false;
+    int num;
 }
