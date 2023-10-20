@@ -1,3 +1,5 @@
+package Programmation_Concurrente.TM4;
+
 import java.util.Random;
 
 import static java.lang.Thread.sleep;
@@ -35,7 +37,7 @@ class Voiture implements Runnable {
                 Thread.sleep(new Random().nextInt(50));
             } catch(InterruptedException e){}
 
-            System.out.println("Direction : " + direction);
+            System.out.println("Direction : " + pont.direction);
             
             pont.exit();
             
