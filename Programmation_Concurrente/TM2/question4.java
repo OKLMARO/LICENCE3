@@ -15,7 +15,7 @@ public class question4 implements Runnable {
         this.nbr_manger = 0;
     }
 
-    public void run() {
+    public void run() { 
         for (int i = 0; i < 1000; i++) {
             l.lock();
             valeur.x = valeur.x + 1;
