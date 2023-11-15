@@ -1,0 +1,40 @@
+D’accord, je peux vous aider à écrire un programme en C qui exécute une commande en parallèle sur une liste d’arguments. Voici un exemple de comment vous pourriez le faire :
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int main(int argc, char *argv[]) {
+    if (argc < 3) {
+        printf("Usage: %s command arg1 arg2 ... argN\n", argv[0]);
+        return 1;
+    }
+
+    for (int i = 2; i < argc; i++) {
+        pid_t pid = fork();
+
+        if (pid < 0) {
+            perror("fork");
+            return 1;
+        }
+
+        if (pid == 0) {
+            execlp(argv[1], argv[1], argv[i], NULL);
+            perror("execlp");
+            return 1;
+        }
+    }
+
+    for (int i = 2; i < argc; i++) {
+        wait(NULL);
+    }
+
+    return 0;
+}
+
+Ce programme lance une nouvelle instance du processus pour chaque argument en utilisant fork(), puis exécute la commande spécifiée sur cet argument en utilisant execlp(). Il attend ensuite que tous les processus se terminent avec wait(). Notez que vous devrez compiler ce programme avec un compilateur C, comme gcc, avant de pouvoir l’exécuter.
+
+Veuillez noter que ce code est un exemple simple et ne gère pas les erreurs de manière exhaustive. Dans un véritable environnement de production, vous voudriez ajouter une gestion d’erreur plus robuste. De plus, l’utilisation de fork() et execlp() de cette manière peut ne pas être appropriée si vous avez un très grand nombre d’arguments, car cela pourrait entraîner la création d’un grand nombre de processus. Dans ce cas, vous voudriez envisager une approche différente, comme l’utilisation de threads ou de la programmation asynchrone.
+
+J’espère que cela vous aide ! Si vous avez d’autres questions, n’hésitez pas à demander.
