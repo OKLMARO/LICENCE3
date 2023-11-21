@@ -20,15 +20,10 @@ void lire_puis_ecrire(int fd_lecture, int fd_ecriture){
 int main(){
     int fd_tube1, fd_tube2;
 
-    if(mkfifo("tube1", 0666) == -1 || mkfifo("tube2", 0666) == -1){
-        perror("mkfifo");
-        exit(1);
-    }
-
-    fd_tube1 = open("tube1", O_RDONLY);
-    fd_tube2 = open("tube2", O_WRONLY);
-    
-    lire_puis_ecrire(fd_tube1, fd_tube2); 
+    fd_tube1 = open("tube1", O_WRONLY);
+    fd_tube2 = open("tube2", O_RDONLY);
+    write(fd_tube2, "a", sizeof(char));
+    lire_puis_ecrire(fd_tube2, fd_tube1); 
     close(fd_tube1);
     close(fd_tube2);
 
