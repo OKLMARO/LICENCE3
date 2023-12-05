@@ -1,0 +1,6 @@
+[submodule "CPO/pacman"]
+	path = CPO/pacman
+	url = https://git-etudiants.lacl.fr/u32112661/pacman.git
+[submodule "Systeme_Outils/tm6_systeme_outils_amairi_youssoufa"]
+	path = Systeme_Outils/tm6_systeme_outils_amairi_youssoufa
+	url = https://git-etudiants.lacl.fr/u32112661/tm6_systeme_outils_amairi_youssoufa.git
