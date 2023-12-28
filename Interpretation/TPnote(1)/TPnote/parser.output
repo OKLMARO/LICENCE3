@@ -1,0 +1,258 @@
+   0  $accept : %entry% $end
+
+   1  ansyn : TERM ansyn
+   2        | program TERM
+
+   3  program : FROM LPAR X EQ INT COMMA Y EQ INT COMMA D EQ direction RPAR instr
+
+   4  direction : NORTH
+   5            | SOUTH
+   6            | EAST
+   7            | WEST
+
+   8  instr : TURN_LEFT
+   9        | TURN_RIGHT
+  10        | STEP
+  11        | instr COMMA instr
+
+  12  %entry% : '\001' ansyn
+
+state 0
+	$accept : . %entry% $end  (0)
+
+	'\001'  shift 1
+	.  error
+
+	%entry%  goto 2
+
+
+state 1
+	%entry% : '\001' . ansyn  (12)
+
+	TERM  shift 3
+	FROM  shift 4
+	.  error
+
+	ansyn  goto 5
+	program  goto 6
+
+
+state 2
+	$accept : %entry% . $end  (0)
+
+	$end  accept
+
+
+state 3
+	ansyn : TERM . ansyn  (1)
+
+	TERM  shift 3
+	FROM  shift 4
+	.  error
+
+	ansyn  goto 7
+	program  goto 6
+
+
+state 4
+	program : FROM . LPAR X EQ INT COMMA Y EQ INT COMMA D EQ direction RPAR instr  (3)
+
+	LPAR  shift 8
+	.  error
+
+
+state 5
+	%entry% : '\001' ansyn .  (12)
+
+	.  reduce 12
+
+
+state 6
+	ansyn : program . TERM  (2)
+
+	TERM  shift 9
+	.  error
+
+
+state 7
+	ansyn : TERM ansyn .  (1)
+
+	.  reduce 1
+
+
+state 8
+	program : FROM LPAR . X EQ INT COMMA Y EQ INT COMMA D EQ direction RPAR instr  (3)
+
+	X  shift 10
+	.  error
+
+
+state 9
+	ansyn : program TERM .  (2)
+
+	.  reduce 2
+
+
+state 10
+	program : FROM LPAR X . EQ INT COMMA Y EQ INT COMMA D EQ direction RPAR instr  (3)
+
+	EQ  shift 11
+	.  error
+
+
+state 11
+	program : FROM LPAR X EQ . INT COMMA Y EQ INT COMMA D EQ direction RPAR instr  (3)
+
+	INT  shift 12
+	.  error
+
+
+state 12
+	program : FROM LPAR X EQ INT . COMMA Y EQ INT COMMA D EQ direction RPAR instr  (3)
+
+	COMMA  shift 13
+	.  error
+
+
+state 13
+	program : FROM LPAR X EQ INT COMMA . Y EQ INT COMMA D EQ direction RPAR instr  (3)
+
+	Y  shift 14
+	.  error
+
+
+state 14
+	program : FROM LPAR X EQ INT COMMA Y . EQ INT COMMA D EQ direction RPAR instr  (3)
+
+	EQ  shift 15
+	.  error
+
+
+state 15
+	program : FROM LPAR X EQ INT COMMA Y EQ . INT COMMA D EQ direction RPAR instr  (3)
+
+	INT  shift 16
+	.  error
+
+
+state 16
+	program : FROM LPAR X EQ INT COMMA Y EQ INT . COMMA D EQ direction RPAR instr  (3)
+
+	COMMA  shift 17
+	.  error
+
+
+state 17
+	program : FROM LPAR X EQ INT COMMA Y EQ INT COMMA . D EQ direction RPAR instr  (3)
+
+	D  shift 18
+	.  error
+
+
+state 18
+	program : FROM LPAR X EQ INT COMMA Y EQ INT COMMA D . EQ direction RPAR instr  (3)
+
+	EQ  shift 19
+	.  error
+
+
+state 19
+	program : FROM LPAR X EQ INT COMMA Y EQ INT COMMA D EQ . direction RPAR instr  (3)
+
+	NORTH  shift 20
+	SOUTH  shift 21
+	EAST  shift 22
+	WEST  shift 23
+	.  error
+
+	direction  goto 24
+
+
+state 20
+	direction : NORTH .  (4)
+
+	.  reduce 4
+
+
+state 21
+	direction : SOUTH .  (5)
+
+	.  reduce 5
+
+
+state 22
+	direction : EAST .  (6)
+
+	.  reduce 6
+
+
+state 23
+	direction : WEST .  (7)
+
+	.  reduce 7
+
+
+state 24
+	program : FROM LPAR X EQ INT COMMA Y EQ INT COMMA D EQ direction . RPAR instr  (3)
+
+	RPAR  shift 25
+	.  error
+
+
+state 25
+	program : FROM LPAR X EQ INT COMMA Y EQ INT COMMA D EQ direction RPAR . instr  (3)
+
+	STEP  shift 26
+	TURN_LEFT  shift 27
+	TURN_RIGHT  shift 28
+	.  error
+
+	instr  goto 29
+
+
+state 26
+	instr : STEP .  (10)
+
+	.  reduce 10
+
+
+state 27
+	instr : TURN_LEFT .  (8)
+
+	.  reduce 8
+
+
+state 28
+	instr : TURN_RIGHT .  (9)
+
+	.  reduce 9
+
+
+state 29
+	program : FROM LPAR X EQ INT COMMA Y EQ INT COMMA D EQ direction RPAR instr .  (3)
+	instr : instr . COMMA instr  (11)
+
+	COMMA  shift 30
+	TERM  reduce 3
+
+
+state 30
+	instr : instr COMMA . instr  (11)
+
+	STEP  shift 26
+	TURN_LEFT  shift 27
+	TURN_RIGHT  shift 28
+	.  error
+
+	instr  goto 31
+
+
+state 31
+	instr : instr . COMMA instr  (11)
+	instr : instr COMMA instr .  (11)
+
+	.  reduce 11
+
+
+20 terminals, 6 nonterminals
+13 grammar rules, 32 states

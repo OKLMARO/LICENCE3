@@ -1,0 +1,4 @@
+process {
+    'a' => "b";
+    'b' => "ab"
+} on "abc"

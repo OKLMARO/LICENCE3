@@ -1,0 +1,4 @@
+process {
+    'a' + 'e' + 'i' + 'o' + 'u' + 'y' => "V";
+    _ => "C"
+} on "azeoybcpafu"

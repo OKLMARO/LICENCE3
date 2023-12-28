@@ -1,0 +1,6 @@
+set voy = "voyelle : "
+set con = "consonne : "
+process {
+    'a' + 'e' + 'i' + 'o' + 'u' + 'y' as v => "[" . voy . v . "]";
+    c => "(" . con . c . ")"
+} on "azeoybcpafu"
