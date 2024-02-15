@@ -1,0 +1,41 @@
+;; on identifie chaque matiere a un entier 1..7
+$musique=1
+$poterie=2
+$dessin=3
+$theatre=4 
+$cinema=5
+$philo=6 
+$lettres=7
+
+;; les jours a 1..5
+$lundi=1 
+$mardi=2
+$mercredi=3
+$jeudi=4 
+$vendredi=5
+
+;; les demi-journees a 1..2 
+$matin=1
+$apresmidi=2 
+
+bigand $i ,$j in [1..5],[1..2]:
+    exact(1,cours_demiJ([1..7],$i,$j))
+end
+
+cours_demiJ($musique,$vendredi,$apresmidi)
+
+bigor $i in [1..5]:
+    cours_demiJ($theatre,$i,$matin) 
+end
+
+bigor $j in [1..5]:
+    (cours_demiJ($lettres,$j,$matin) => cours_demiJ($cinema,$j,$apresmidi)) or 
+    (cours_demiJ($lettres,$j,$apresmidi) => cours_demiJ($cinema,$j,$matin))
+end
+
+cours_demiJ($philo,$lundi,$matin) or cours_demiJ($philo,$lundi,$apresmidi)
+
+bigor $j in [1..5]:
+    (cours_demiJ($philo,$j,$matin) => cours_demiJ($theatre,$j,$apresmidi)) or 
+    (cours_demiJ($philo,$j,$apresmidi) => cours_demiJ($theatre,$j,$matin))
+end

@@ -1,0 +1,53 @@
+;; chemin($i,$j) : $i = le sommet, $j = la position dans le chemin
+;; exemple : chemin(2,4) : le 4e sommet du chemin est 2
+
+;; 1) le chemin part du noeud 1
+;; 2) le chemin s'arrete au noeud 2
+;; 3) contraintes de connexion entre les noeuds, on doit suivre la successsion "rouge,vert,bleu"
+
+bigand $j in [1..8]:
+	exact(1,chemin([1..8],$j))
+end
+
+
+bigand $i in [1..7]:
+;; si le noeud en position $i sur le chemin est 1, alors en position $i+1 et etant vert, on doit trouver 2 ou 8
+	(chemin(1,$i) => chemin(2,$i+1) or chemin(8,$i+1))
+end
+
+bigand $i in [1..7]:
+;; si le noeud en position $i sur le chemin est 2, alors en position $i+1 et etant bleu, on ne peut pas bouger
+	(chemin(2,$i) => not  chemin(2,$i+1) or chemin(3,$i+1) or chemin(4,$i+1) or chemin(5,$i+1) or chemin(6,$i+1) or chemin(7,$i+1) or chemin(8,$i+1) or chemin(1,$i+1))
+end
+
+bigand $i in [1..7]:
+;; si le noeud en position $i sur le chemin est 3, alors en position $i+1 et etant vert, on doit 8
+	(chemin(3,$i) => chemin(8,$i+1))
+end
+
+bigand $i in [1..7]:
+;; si le noeud en position $i sur le chemin est 4, alors en position $i+1 et etant rouge, on doit trouver 3
+	(chemin(4,$i) => chemin(3,$i+1))
+end
+
+bigand $i in [1..7]:
+;; si le noeud en position $i sur le chemin est 5, alors en position $i+1 et etant bleu, on doit trouver 4
+	(chemin(5,$i) => chemin(4,$i+1))
+end
+
+bigand $i in [1..7]:
+;; si le noeud en position $i sur le chemin est 6, alors en position $i+1 et etant vert, on doit trouver 5
+	(chemin(6,$i) => chemin(5,$i+1))
+end
+
+bigand $i in [1..7]:
+;; si le noeud en position $i sur le chemin est 7, alors en position $i+1 et etant rouge, on doit trouver 1 ou 6
+	(chemin(7,$i) => chemin(1,$i+1) or chemin(6,$i+1))
+end
+
+bigand $i in [1..7]:
+;; si le noeud en position $i sur le chemin est 8, alors en position $i+1 et etant bleu, on ne peut pas bouger
+	(chemin(8,$i) => not  chemin(2,$i+1) or chemin(3,$i+1) or chemin(4,$i+1) or chemin(5,$i+1) or chemin(6,$i+1) or chemin(7,$i+1) or chemin(2,$i+1) or chemin(1,$i+1))
+end
+
+chemin(1,1) and chemin(2,8)

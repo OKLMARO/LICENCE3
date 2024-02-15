@@ -1,0 +1,59 @@
+;;declarations des merveilles
+$christ = 1
+$colisee = 2
+$itza = 3
+$taj = 4
+;;declarations des personnes
+$sandra = 1
+$gladys = 2
+$connie = 3
+$ruth = 4
+;;declarations des mois
+$avril = 1
+$mai = 2
+$juin = 3
+$juillet = 4
+;;declaration des metiers
+$medecin = 1
+$musicien = 2
+$veterinaire = 3
+$avocat = 4
+;; Contrainte une seule personne un seul mois
+bigand $i in [1..4]:
+	exact(1, pers_mois($i, [1..4])) and exact(1, pers_mois([1..4], $i))
+end
+;; contrainte une seule personne un seul metier
+bigand $i in [1..4]:
+	exact(1, pers_met($i, [1..4])) and exact(1, pers_met([1..4], $i))
+end
+;; contrainte une seule personne une seule merveille
+bigand $i in [1..4]:
+	exact(1, pers_mer($i, [1..4])) and exact(1, pers_mer([1..4], $i))
+end
+;;Celle qui a visité le Christ Rédempteur est soit celle qui a voyagé en Avril soit la médecin
+bigor $i in [1..4]:
+	pers_met($i, $medecin) or pers_mois($i, $avril) => pers_mer($i, $christ)
+end
+;;Sandra est partie en vacances bien plus tard que celle qui a voyagé au Rio de Janeiro
+bigor $i, $mois1, $mois2 in [1..4],[1..4],[1..4]
+	when($mois1 > $mois2):
+	pers_mois($sandra, $mois1) and pers_mer($i, $christ) and pers_mois($i, $mois2)
+end
+;;La médecin est soit Sandra soit celle qui a visité le Colossée
+bigor $i in [1..4]:
+	pers_mer($i, $colisee) or pers_met($i, $medecin)
+end
+;;Gladys a voyagé un mois après la musicienne
+bigor $i, $j in [1..4],[1..4]:
+	pers_mois($gladys, $i) => pers_met($j, $musicien) and pers_mois($j, $i+1)
+end
+;;Entre Connie et la véterinaire, l'une a visité le Christ Rédempteur et l'autre a voyagé en Juillet.
+bigor $i in [1..4]:
+	(pers_mois($connie, $juillet) and pers_mer($i, $christ)) or (pers_mois($i, $juillet) and pers_mer($connie, $christ))
+end
+;;Gladys est veterinaire.
+pers_met($gladys, $veterinaire)
+;;La musicienne a voyagé un mois avant celle qui a visité le Mexique.
+bigor $i, $j, $mois in [1..4],[1..4],[1..4]:
+	pers_mer($i, $itza) and pers_mois($i, $mois) => pers_met($j, $musicien) and pers_mois($j, $mois-1)
+end

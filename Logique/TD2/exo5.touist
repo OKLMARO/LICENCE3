@@ -1,0 +1,94 @@
+$N=5
+
+;; nationalités
+$anglais=1
+$suedois=2
+$danois=3
+$norvegien=4
+$allemand=5
+
+;; couleurs
+$rouge=1
+$vert=2
+$blanc=3
+$bleu=4
+$jaune=5
+
+;; animaux
+$chien=1
+$oiseau=2
+$chat=3
+$cheval=4
+$poisson=5
+
+;; cigarettes
+$pall=1
+$dunhill=2
+$blend=3
+$blue=4
+$prince=5
+
+
+;; boisson
+$the=1
+$cafe=2
+$lait=3
+$biere=4
+$eau=5
+
+;; couleur unique
+bigand $j in [1..$N]:
+exact(1,pers_mais($j,[1..$N])) and exact(1,pers_mais([1..$N],$j))
+end
+
+;; position unique
+bigand $j in [1..$N]:
+exact(1,mais_pos($j,[1..$N])) and exact(1,mais_pos([1..$N],$j))
+end
+
+;; marque cigares unique
+bigand $j in [1..$N]:
+exact(1,pers_fume($j,[1..$N])) and exact(1,pers_fume([1..$N],$j))
+end
+
+;; boisson unique
+bigand $j in [1..$N]:
+exact(1,pers_boit($j,[1..$N])) and exact(1,pers_boit([1..$N],$j))
+end
+
+;; animal unique
+bigand $j in [1..$N]:
+exact(1,pers_ani($j,[1..$N])) and exact(1,pers_ani([1..$N],$j))
+end
+;;1
+pers_mais($anglais, $rouge)
+;;2
+pers_ani($suedois, $chien)
+;;3
+bigand $i in [1..$N]:
+	pos_mais($i, $vert) and pos_mais($i+1, $blanc)
+end
+;;11
+bigor $j1,$j2,$pos1,$pos2,$coul1,$coul2 in [1..$N],[1..$N],[1..$N],[1..$N],[1..$N],[1..$N] 
+  when ($pos1 == $pos2+1 or $pos1 == $pos2-1):
+(per_ani($j1,$cheval) and pers_mais($j1,$coul1) and mais_pos($coul1,$pos1) and
+ pers_fume($j2,$dunhill) and pers_mais($j2,$coul2)) and mais_pos($coul2,$pos2) 
+end
+;;12
+bigand $i in [1..5]:
+    pers_fume($i,$blue) => pers_boit($i,$biere)
+end
+;;13
+pers_fume($allemand,$prince)
+;;14
+bigor $pos1,$pos2,$maison in [1..$N],[1..$N],[1..$N] 
+  when ($pos1 == $pos2+1 or $pos1 == $pos2-1):
+(pers_mais($norvegien,$maison) and mais_pos($maison,$pos1) and
+ mais_pos($vert,$pos2))
+end
+;;15
+bigor $j1,$j2,$pos1,$pos2,$coul1,$coul2 in [1..$N],[1..$N],[1..$N],[1..$N],[1..$N],[1..$N] 
+  when ($pos1 == $pos2+1 or $pos1 == $pos2-1):
+(per_boit($j1,$eau) and pers_mais($j1,$coul1) and mais_pos($coul1,$pos1) and
+ pers_fume($j2,$blend) and pers_mais($j2,$coul2)) and mais_pos($coul2,$pos2) 
+end
