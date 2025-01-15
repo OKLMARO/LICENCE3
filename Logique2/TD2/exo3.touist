@@ -1,4 +1,4 @@
-;; Exercice 3 TD2
+;; Exercice 3 TD3
 
 not(a(2))
 not(b(1))
@@ -11,8 +11,7 @@ bigand $i in [0..3] :
 	s($i) <=> (r($i) xor a($i) xor b($i))
 end
 
-bigand $i in : 
-	p($i) 
+bigand $i in [0..2]: 
+	r($i+1) <=> atleast(2, [r($i),a($i),b($i)]) 
 end
-
 
