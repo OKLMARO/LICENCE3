@@ -1,0 +1,70 @@
+;; Exercice 2 TD2
+
+$france = 1
+$espagne = 2
+$italie = 3
+$suisse = 4
+$autriche = 5
+$allemagne = 6
+$luxembourg = 7
+$belgique = 8
+
+bigand $i in [1..8]: 
+	exact(1,couleurs_pays($i,[1..4])) 
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($france, $couleurs) and couleurs_pays($belgique, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($france, $couleurs) and couleurs_pays($espagne, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($france, $couleurs) and couleurs_pays($luxembourg, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($france, $couleurs) and couleurs_pays($suisse, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($france, $couleurs) and couleurs_pays($italie, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($france, $couleurs) and couleurs_pays($allemagne, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($belgique, $couleurs) and couleurs_pays($luxembourg, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($belgique, $couleurs) and couleurs_pays($allemagne, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($suisse, $couleurs) and couleurs_pays($italie, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($suisse, $couleurs) and couleurs_pays($allemagne, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($suisse, $couleurs) and couleurs_pays($autriche, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($autriche, $couleurs) and couleurs_pays($italie, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($autriche, $couleurs) and couleurs_pays($allemagne, $couleurs))
+end
+
+bigand $couleurs in [1..4]: 
+	 not(couleurs_pays($allemagne, $couleurs) and couleurs_pays($luxembourg, $couleurs))
+end

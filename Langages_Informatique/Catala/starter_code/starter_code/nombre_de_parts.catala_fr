@@ -1,0 +1,251 @@
+# Prologue
+
+```catala-metadata
+déclaration énumération SituationFamiliale:
+  -- Mariés
+  -- Pacsés
+  -- DivorcéSéparés
+  -- Célibataire
+  -- Veuf
+
+déclaration champ d'application NombreDeParts:
+  entrée nombre_enfants_à_charge contenu entier
+  entrée situation_familiale contenu SituationFamiliale
+
+  résultat nombre_de_parts contenu décimal
+```
+
+# Code Général des Impôts
+
+## Livre premier : Assiette et liquidation de l'impôt
+
+### Première Partie : Impôts d'État
+
+#### Titre premier : Impôts directs et taxes assimilées 
+
+##### Chapitre premier : Impôt sur le revenu 
+
+###### Section V : Calcul de l'impôt 
+
+####### II : Impôt sur le revenu 
+
+######## Article 194 | LEGIARTI000033817781
+
+I. Le nombre de parts à prendre en considération pour la division du revenu
+imposable prévue à l'article 193 est déterminé conformément aux dispositions
+suivantes :
+
+SITUATION DE FAMILLE                                 NOMBRE DE PARTS
+---------------------------------------------------- ---------------
+Célibataire, divorcé ou veuf sans enfant à charge    1
+Marié sans enfant à charge                           2
+Célibataire ou divorcé ayant un enfant à charge      1,5
+Marié ou veuf ayant un enfant à charge               2,5
+Célibataire ou divorcé ayant deux enfants à charge   2
+Marié ou veuf ayant deux enfants à charge            3
+Célibataire ou divorcé ayant trois enfants à charge  3
+Marié ou veuf ayant trois enfants à charge           4
+Célibataire ou divorcé ayant quatre enfants à charge 4
+Marié ou veuf ayant quatre enfants à charge          5
+Célibataire ou divorcé ayant cinq enfants à charge   5
+Marié ou veuf ayant cinq enfants à charge            6
+Célibataire ou divorcé ayant six enfants à charge    6
+
+et ainsi de suite, en augmentant d'une part par enfant à charge du
+contribuable.
+
+```catala
+champ d'application NombreDeParts:
+  définition nombre_de_parts égal à
+    si nombre_enfants_à_charge = 0 alors
+      selon situation_familiale sous forme
+      -- Célibataire: 1,0
+      -- DivorcéSéparés: 1,0
+      -- Veuf: 1,0
+      -- Mariés: 2,0
+      -- Pacsés: 2,0
+    si nombre_enfants_à_charge = 1 alors
+      selon situation_familiale sous forme
+      -- Célibataire: 1,5
+      -- DivorcéSéparés: 1,5
+      -- Veuf: 1,5
+      -- Mariés: 2,5
+      -- Pacsés: 2,5
+    si nombre_enfants_à_charge = 2 alors
+      selon situation_familiale sous forme
+      -- Célibataire: 2,0
+      -- DivorcéSéparés: 2,0
+      -- Veuf: 3,0
+      -- Mariés: 3,0
+      -- Pacsés: 3,0
+    si nombre_enfants_à_charge = 3 alors
+      selon situation_familiale sous forme
+      -- Célibataire: 3,0
+      -- DivorcéSéparés: 3,0
+      -- Veuf: 4,0
+      -- Mariés: 4,0
+      -- Pacsés: 4,0
+    si nombre_enfants_à_charge = 4 alors
+      selon situation_familiale sous forme
+      -- Célibataire: 4,0
+      -- DivorcéSéparés: 4,0
+      -- Veuf: 5,0
+      -- Mariés: 5,0
+      -- Pacsés: 5,0
+    si nombre_enfants_à_charge = 5 alors
+      selon situation_familiale sous forme
+      -- Célibataire: 5,0
+      -- DivorcéSéparés: 5,0
+      -- Veuf: 6,0
+      -- Mariés: 6,0
+      -- Pacsés: 6,0
+    si nombre_enfants_à_charge = 6 alors
+      selon situation_familiale sous forme
+      -- Célibataire: 6,0
+      -- DivorcéSéparés: 6,0
+      -- Veuf: 7,0
+      -- Mariés: 7,0
+      -- Pacsés: 7,0
+    sinon pour tout nombre_enfants_à_charge supérieur à 6, le nombre de parts est
+    égal à situation_familiale sous forme
+      -- Célibataire: nombre_enfants_à_charge
+      -- DivorcéSéparés: nombre_enfants_à_charge
+      -- Veuf: nombre_enfants_à_charge + 1,0
+      -- Mariés: nombre_enfants_à_charge + 1,0
+      -- Pacsés: nombre_enfants_à_charge + 1,0
+```
+
+######## Article 195 | LEGIARTI000046860994
+
+1. Par dérogation aux dispositions qui précèdent, le revenu imposable des
+contribuables célibataires, divorcés ou veufs n'ayant pas d'enfant à leur
+charge, exclusive, principale ou réputée également partagée entre les
+parents, est divisé par 1,5 lorsque ces contribuables :
+
+```catala
+champ d'application NombreDeParts:
+  définition nombre_de_parts égal à
+    si nombre_enfants_à_charge = 0 alors
+      selon situation_familiale sous forme
+      -- Célibataire: 1 / 1,5
+      -- DivorcéSéparés: 1 / 1,5
+      -- Veuf: 2,0 / 1,5
+      -- Mariés: 2,0 / 1,5
+      -- Pacsés: 2,0 / 1,5
+```
+
+a. Vivent seuls et ont un ou plusieurs enfants majeurs ou faisant l'objet
+d'une imposition distincte dont ces contribuables ont supporté à titre
+exclusif ou principal la charge pendant au moins cinq années au cours
+desquelles ils vivaient seuls ;
+
+b. Vivent seuls et ont eu un ou plusieurs enfants qui sont morts, à la
+condition que l'un d'eux au moins ait atteint l'âge de seize ans ou que l'un
+d'eux au moins soit décédé par suite de faits de guerre et que les
+contribuables aient supporté à titre exclusif ou principal la charge de l'un
+au moins de ces enfants pendant au moins cinq années au cours desquelles ils
+vivaient seuls ;
+
+c. Sont titulaires, soit pour une invalidité de 40 % ou au-dessus, soit à
+titre de veuve, d'une pension prévue par les dispositions du code des pensions
+militaires d'invalidité et des victimes de guerre reproduisant celles des lois
+des 31 mars et 24 juin 1919 ;
+
+d. Sont titulaires d'une pension d'invalidité pour accident du travail de 40 %
+ou au-dessus ;
+
+d bis. Sont titulaires de la carte “ mobilité inclusion ” portant la mention “
+invalidité ” prévue à l'article L. 241-3 du code de l'action sociale et des
+familles ;
+
+e. Vivent seuls et ont adopté un enfant, à la condition que, si l'adoption a
+eu lieu alors que l'enfant était âgé de plus de dix ans, cet enfant ait été à
+la charge de l'adoptant comme enfant recueilli dans les conditions prévues à
+l'article 196 depuis l'âge de dix ans. Cette disposition n'est pas applicable
+si l'enfant adopté est décédé avant d'avoir atteint l'âge de seize ans ou si
+l'enfant adopté n'a pas été à la charge exclusive ou principale des
+contribuables pendant au moins cinq années au cours desquelles ceux-ci
+vivaient seuls ;
+
+f. Sont âgés de plus de 74 ans et titulaires de la carte du combattant ou
+d'une pension servie en vertu des dispositions du code des pensions militaires
+d'invalidité et des victimes de guerre ; cette disposition est également
+applicable aux conjoints survivants, âgés de plus de 74 ans, des personnes
+mentionnées ci-dessus ainsi que des personnes titulaires de la carte du
+combattant au moment de leur décès.
+
+2. Le quotient familial prévu à l'article 194 est augmenté d'une demi-part
+pour chaque enfant à charge et d'un quart de part pour chaque enfant réputé
+à charge égale de l'un et l'autre de ses parents, titulaire de la carte “
+mobilité inclusion ” portant la mention “ invalidité ” prévue à l'article
+L. 241-3 du code de l'action sociale et des familles.
+
+3. Le quotient familial prévu à l'article 194 est augmenté d'une demi-part
+pour les contribuables mariés, lorsque l'un ou l'autre des conjoints
+remplit l'une des conditions fixées aux c, d et d bis du 1.
+
+
+4. Le quotient familial prévu à l'article 194 est augmenté d'une part pour les
+contribuables mariés invalides lorsque chacun des conjoints remplit l'une
+des conditions fixées aux c, d et d bis du 1.
+
+5. Le quotient familial prévu à l'article 194 est augmenté d'une demi-part pour
+les contribuables célibataires, divorcés ou veufs ayant un ou plusieurs
+enfants à charge, que celle-ci soit exclusive, principale ou réputée également
+partagée entre les parents, lorsque ces contribuables remplissent l'une des
+conditions d'invalidité fixées aux c, d ou d bis du 1.
+
+6. Les contribuables mariés, lorsque l'un des conjoints est âgé de plus de 74
+ans et titulaire de la carte du combattant ou d'une pension servie en vertu
+des dispositions du code des pensions militaires d'invalidité et des
+victimes de guerre, bénéficient d'une demi-part supplémentaire de quotient
+familial.
+
+Les contribuables qui bénéficient des dispositions des 3 ou 4 ne peuvent
+bénéficier des dispositions du premier alinéa.
+
+
+NOTA :
+
+Modifications effectuées en conséquence des articles 1er et 8 de l’ordonnance
+n° 2015-1781 du 28 décembre 2015. Conformément au II de l’article 158 de la
+loi n° 2019-1479 du 29 décembre 2019, ces dispositions entrent en vigueur le
+1er janvier 2021.
+
+######## Article 196 | LEGIARTI000006303122
+
+Sont considérés comme étant à la charge du contribuable, que celle-ci soit
+exclusive, principale ou réputée également partagée entre les parents, à la
+condition de n'avoir pas de revenus distincts de ceux qui servent de base à
+l'imposition de ce dernier :
+
+1° Ses enfants âgés de moins de 18 ans ou infirmes ;
+
+2° Sous les mêmes conditions, les enfants qu'il a recueillis à son propre
+foyer (1).
+
+NOTA :
+
+(1) Ces dispositions s'appliquent pour l'imposition des revenus des années
+2003 et suivantes.
+
+######## Article 196 A bis | LEGIARTI000033220369
+
+Tout contribuable peut considérer comme étant à sa charge, au sens de l'article
+196 , à la condition qu'elles vivent sous son toit, les personnes titulaires de
+la carte “ mobilité inclusion ” portant la mention “ invalidité ” prévue à
+l'article L. 241-3 du code de l'action sociale et des familles.
+
+
+######## Article 196 B | LEGIARTI000046860788
+
+Le contribuable qui accepte le rattachement des personnes désignées au 3 de
+l'article 6 bénéficie d'une demi-part supplémentaire de quotient familial par
+personne ainsi rattachée.
+
+Si la personne rattachée est mariée ou a des enfants à charge, l'avantage
+fiscal accordé au contribuable prend la forme d'un abattement de 6 368 € sur
+son revenu global net par personne ainsi prise en charge. Lorsque les enfants
+de la personne rattachée sont réputés être à la charge égale de l'un et
+l'autre de leurs parents, l'abattement auquel ils ouvrent droit pour le
+contribuable, est égal à la moitié de cette somme.

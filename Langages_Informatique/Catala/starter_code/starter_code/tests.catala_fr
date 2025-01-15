@@ -1,0 +1,15 @@
+> Inclusion : nombre_de_parts.catala_fr
+
+# Tests 
+
+```catala 
+déclaration champ d'application Test1:
+  résultat test contenu NombreDeParts
+
+champ d'application Test1:
+  définition test égal à résultat de NombreDeParts avec {
+    -- nombre_enfants_à_charge : 0
+    -- situation_familiale : Célibataire
+  }
+  assertion test.nombre_de_parts = 1,0
+```

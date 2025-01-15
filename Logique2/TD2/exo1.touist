@@ -1,0 +1,9 @@
+;; Exercice 1
+p => j
+m or p
+j=>(m or p)
+not m and j
+
+((p => j) and (m or p) and (j=>(m or p)) and (not m and j)) => p
+
+

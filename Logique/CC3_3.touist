@@ -1,0 +1,26 @@
+bigand Garcon in [Larry, Nicholas, Philip, Thomas]:
+  bigand Repas in [Frites, Dinde, Tarte, Quiche]:
+    1 <=> GarconRepas
+  end
+  bigand Age in [8, 9, 10, 11]:
+    1 <=> GarconAge
+  end
+end
+
+bigand Age in [8, 9, 10]:
+  PhilipAge => Tarte(Age+1)
+end
+
+bigand Age in [9, 10, 11]:
+  DindeAge => exists Age2 in [8, 9, 10]: Age2 = Age-1 and ThomasAge2
+end
+
+bigand Age in [8, 9]:
+  PhilipAge+2 => QuicheAge
+end
+
+bigand Garcon in [Larry, Nicholas, Philip, Thomas]:
+  bigand Age in [8, 9, 10, 11]:
+    not (GarconAge and Garcon(Age+1)) and not (GarconAge and Garcon(Age+2)) and not (GarconAge and Garcon(Age+3))
+  end
+end
