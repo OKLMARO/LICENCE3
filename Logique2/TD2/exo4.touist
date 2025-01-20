@@ -23,5 +23,29 @@ bigor $jour in [1..5]:
 	edt($theatre,$jour,$matin) 
 end
 
+bigor $jour in [1..5]: 
+	(edt($lettres,$jour,$matin) and edt($cinema,$jour,$apres_midi))
+	or
+	(edt($lettres,$jour,$apres_midi) and edt($cinema,$jour,$matin))
+end
+
+bigor $temps in [1..2]: 
+	edt($philo,$lundi,$temps) 
+end
+
+bigor $jour in [1..5]: 
+	(edt($theatre,$jour,$matin) and edt($philo,$jour,$apres_midi))
+	or
+	(edt($theatre,$jour,$apres_midi) and edt($philo,$jour,$matin))
+end
 
 
+bigand $jour in [1..5]: 
+  bigand $demijournee in [1..2]: 
+    atmost(1, edt([1..7], $jour, $demijournee))  
+  end 
+end
+
+bigand $matiere in [1..7]:
+  exact(1, edt($matiere, [1..5], [1..2]))
+end
