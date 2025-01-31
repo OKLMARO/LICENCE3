@@ -73,20 +73,20 @@ public class Tas {
     public void entasser(int index){
         int max;
         int temp;
-        if (getFilsGauche(index) <= n && t.get(getFilsGauche(index)) > t.get(index)) {
+        if (getFilsGauche(index) <= n - 1 && t.get(getFilsGauche(index)) > t.get(index)) {
             max = getFilsGauche(index);
         }
         else{
             max = getFilsDroit(index);
         }
 
-        if (getFilsDroit(index) <= n && t.get(getFilsDroit(index)) > t.get(max)) {
+        if (getFilsDroit(index) <= n - 1 && t.get(getFilsDroit(index)) > t.get(max)) {
             max = getFilsDroit(index);
         }
 
         if (max != getFilsDroit(index)) {
-            temp = t.get(getFilsDroit(index));
-            t.set(getFilsDroit(index), t.get(max));
+            temp = t.get(index);
+            t.set(index, t.get(max));
             t.set(max, temp);
             entasser(max);
         }
