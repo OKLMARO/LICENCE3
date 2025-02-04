@@ -1,0 +1,77 @@
+;;noms des Grecs
+$aphrodite=1
+$zeus=2
+$hermes=3
+$ares=4
+;;noms des romains
+$jupiter=1
+$venus=2
+$mercure=3
+$mars=4
+;;jours de la semaine
+$mardi=1
+$mercredi=2
+$jeudi=3
+$vendredi=4
+;;specialite des grecs/romains
+$amour=1
+$guerre=2
+$poesie=3
+$tonerre=4
+
+;;Contraintes, chaque dieu grec a une specialitée
+bigand $j in [1..4]:
+exact(1,grec_specialite($j,[1..4])) and exact(1,grec_specialite([1..4],$j)) 
+end
+
+;;Contraintes, chaque dieu romain a une specialitée
+bigand $j in [1..4]:
+exact(1,romain_specialite($j,[1..4])) and exact(1,romain_specialite([1..4],$j)) 
+end
+
+;;chaque grec est feté un seul jour
+bigand $j in [1..4]:
+exact(1,grec_jour_semaine($j,[1..4])) and exact(1,grec_jour_semaine([1..4],$j)) 
+end
+
+;;chaque specialiter est feté un seul jour
+bigand $j in [1..4]:
+exact(1,spe_jour_semaine($j,[1..4])) and exact(1,spe_jour_semaine([1..4],$j)) 
+end
+
+;; chaque specialiter est feté un seul jour pour les romains
+bigand $j in [1..4]:
+exact(1,romain_jour_semaine($j,[1..4])) and exact(1,romain_jour_semaine([1..4],$j)) 
+end
+
+;;Contraintes, chaque dieu romain a une representation grec
+bigand $j in [1..4]:
+exact(1,grec_romain($j,[1..4])) and exact(1,grec_romain([1..4],$j)) 
+end
+
+;;Ni Aphrodite ni le dieu de la guerre ne s'appellent Mercure chez les romains. 
+not romain_specialite($mars,$guerre) and not grec_specialite($aphrodite,$guerre)
+
+;;Zeus était célébré le jour après Hermès et celui avant Venus. 
+bigor $jour in [2..4-1]:
+    grec_jour_semaine($zeus,$jour) and grec_jour_semaine($hermes,$jour-1) and romain_jour_semaine($venus,$jour+1)
+end
+
+;;Soit Arès était le dieu de la guerre, soit il était connu sous le nom de Jupiter chez les romains.
+grec_specialite($ares,$guerre) xor grec_romain($ares,$jupiter)
+
+;;Le dieu de la poésie s'appelait soit Aphrodite soit était célébré mercredi. 
+grec_specialite($aphrodite,$poesie) xor spe_jour_semaine($poesie,$mercredi)
+
+;;Vendredi et mardi n'étaient pas des jours propices à la poésie.
+not spe_jour_semaine($poesie,$mardi) and not spe_jour_semaine($poesie,$vendredi)
+
+;;Le jour de célébration de Jupiter était deux jours après celui quand le dieu de la guerre était célébré.
+bigor $jour in [1+2..4]:
+    romain_jour_semaine($jupiter,$jour) and spe_jour_semaine($guerre,$jour-2)
+end
+
+;;Mercure était célébré un jour avant le dieu de la tonnerre. 
+bigor $jour in [1..4-1]:
+    romain_jour_semaine($mercure,$jour) and spe_jour_semaine($tonerre,$jour+1)
+end

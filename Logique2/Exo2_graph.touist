@@ -1,0 +1,25 @@
+;; chemin($i,$j) : $i = le sommet, $j = la position dans le chemin
+;; exemple : chemin(2,4) : le 4e sommet du chemin est 2
+
+;; 1) le chemin part du noeud 1
+;; 2) le chemin s'arrete au noeud 2
+;; 3) contraintes de connexion entre les noeuds, on doit suivre la successsion "rouge,vert,bleu"
+
+bigand $j in [1..8]:
+    exact(1,chemin([1..8],$j))
+end
+
+bigand $i in [1..7]:
+    ;; Règles de transition entre les nœuds
+    (chemin(1,$i) => chemin(2,$i+1) or chemin(8,$i+1))   ;; Noeud 1 (rouge) ? Vert
+    and (chemin(2,$i) => not chemin(2,$i+1))             ;; Noeud 2 (vert) ? Ne peut pas bouger après
+    and (chemin(3,$i) => chemin(8,$i+1))                 ;; Noeud 3 (rouge) ? Vert
+    and (chemin(4,$i) => chemin(3,$i+1))                 ;; Noeud 4 (bleu) ? Rouge
+    and (chemin(5,$i) => chemin(4,$i+1))                 ;; Noeud 5 (vert) ? Bleu
+    and (chemin(6,$i) => chemin(5,$i+1))                 ;; Noeud 6 (rouge) ? Vert
+    and (chemin(7,$i) => chemin(1,$i+1) or chemin(6,$i+1)) ;; Noeud 7 (bleu) ? Rouge
+    and (chemin(8,$i) => (chemin(1,$i+1) or chemin(6,$i+1)))  ;; Noeud 8 (vert) ? Bleu ou Vert
+end
+
+;; Contraintes de départ et d'arrivée
+chemin(1,1) and chemin(2,8)
