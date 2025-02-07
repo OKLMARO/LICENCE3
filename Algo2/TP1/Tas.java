@@ -91,4 +91,32 @@ public class Tas {
             entasser(max);
         }
     }
+    
+    // Question n°7
+    public void inser(int value) {
+        t.add(value);
+        int index = this.n;
+        this.n = n + 1;
+        while (index > 0 && t.get(index) > t.get(getParent(index))) {
+            int temp = t.get(index);
+            t.set(index, t.get(getParent(index)));
+            t.set(getParent(index), temp);
+            index = getParent(index);
+        }
+    }
+    
+    // Question n°8 (La complexité de cette fonction est linéaire)
+    public int supprMax(){
+        if (n <= 0){
+            throw new IllegalStateException();
+        }
+        else{
+            n = n - 1;
+            int index = n;
+            int max = t.get(0);
+            t.set(index, t.get(index));
+            entasser(index);
+            return max;
+        }
+    }
 }
