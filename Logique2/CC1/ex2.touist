@@ -1,0 +1,86 @@
+;; on identifie chaque famille à un entier 1..4
+$thorpe = 1
+$kendall = 2
+$benson = 3
+$ridley = 4
+
+;; on identifie chaque créneau à un entier 1..4
+$h7 = 1
+$h8 = 2
+$h9 = 3
+$h10 = 4
+
+;; on indentifie le nombre de membres dans la familles 1..4
+$mem3 = 1
+$mem4 = 2
+$mem5 = 3
+$mem6 = 4
+
+;; on indentifie les différents parasols 1..4
+
+$para_vert = 1
+$para_bleu = 2
+$para_jaune = 3
+$para_blanc = 4
+
+;; un parasol unique par famille
+bigand $i in [1..4]: 
+	exact(1,fam_para($i,[1..4])) and exact(1,fam_para([1..4],$i)) 
+end
+
+;; parasol unique par membre
+bigand $i in [1..4]: 
+	exact(1,para_mem($i,[1..4])) and exact(1,para_mem([1..4],$i)) 
+end
+
+;; un créneau unique
+bigand $i in [1..4]: 
+	exact(1,fam_h($i,[1..4])) and exact(1,fam_h([1..4],$i)) 
+end
+
+;; membre unique
+bigand $i in [1..4]: 
+	exact(1,fam_mem($i,[1..4])) and exact(1,fam_mem([1..4],$i)) 
+end
+
+bigand $i in [1..4]: 
+	exact(1,mem_h($i,[1..4])) and exact(1,mem_h([1..4],$i)) 
+end
+
+
+;; Le parasol vert peut faire de l'ombre à 5 personnes.
+para_mem($para_vert, $mem5)
+
+;; Les Thorpe sont arrivés à la plage une heure après la famille avec le parasol bleu, et une heure avant la famille la plus nombreuse.
+bigand $i, $j in [2..3], [1..4]: 
+	 fam_h($thorpe,$i) => fam_para([1..4],$i-1) and (fam_mem($j,$mem6) => fam_h($j,$i+1))
+end
+
+fam_para($kendall,$para_vert) or fam_para($kendall,$para_jaune)
+
+;; Les Kendall ont soit le parasol vert soit le parasol jaune et un membre de plus que les Benson.
+bigand $i in [1..3]: 
+	fam_mem($kendall,$i+1) => fam_mem($benson,$i) 
+end
+
+;; Les Ridley n'ont pas le parasol blanc et ne sont pas la famille la moins nombreuse.
+not(fam_para($ridley,$para_blanc)) and not(fam_mem($ridley,1))
+
+;;La plus petite famille n'a pas le parasol jaune.
+not(para_mem($para_jaune,1))
+
+;; Si les Kendall sont arrivés à 8h00 alors la famille la plus nombreuse est arrivée à 9h00.
+fam_h($kendall,$h8) => mem_h(4,$h9)
+
+;; Si la famille avec le parasol vert est arrivée à 7h00 alors les Ridley sont 6.
+bigand $i in [1..4]: 
+	fam_para($i,$para_vert) => fam_mem($ridley,$mem6) 
+end
+
+;; D'après ceci:
+
+;; La famille Thorpe est venu à 8H et elle contient 4 personnes et elle a le parasol bleu
+
+;; La famille Kendall est venu à 7H et elle contient 3 personnes et elle a le parasol vert
+
+;; La famille Benson est venu 

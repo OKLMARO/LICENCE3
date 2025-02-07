@@ -1,0 +1,47 @@
+;; si le noeud en position $i sur le chemin est 1 alors on peut aller en 2 ou 3
+bigand $i in [1..11]: 
+	chemin(1,$i) => chemin(2,$i+1) or chemin(3,$i+1) 
+end
+
+;; si le noeud en position $i sur le chemin est 2 alors on peut aller que en 5
+bigand $i in [1..11]: 
+	chemin(2,$i) => chemin(5,$i+1) 
+end
+
+;; si le noeud en position $i sur le chemin est 3 alors on peut aller en 4, 6 ou 2
+bigand $i in [1..11]: 
+	chemin(3,$i) => chemin(4,$i+1) or chemin(6,$i+1) or chemin(2,$i+1) 
+end
+
+;; si le noeud en position $i sur le chemin est 4 alors on peut aller que en 5
+bigand $i in [1..11]: 
+	chemin(4,$i) => chemin(5,$i+1) 
+end
+
+;; si le noeud en position $i sur le chemin est 5 alors on peut aller que en 4
+bigand $i in [1..11]: 
+	chemin(5,$i) => chemin(4,$i+1) 
+end
+
+;; si le noeud en position $i sur le chemin est 6 alors on peut aller en 5, 7 ou 1
+bigand $i in [1..11]: 
+	chemin(6,$i) => chemin(5,$i+1) or chemin(7,$i+1) or chemin(1,$i+1) 
+end
+
+;; si le noeud en position $i sur le chemin est 7 alors on peut aller que en 6
+bigand $i in [1..11]: 
+	chemin(7,$i) => chemin(6,$i+1) 
+end
+
+;; si le noeud en position $i sur le chemin est 8 alors on peut aller en 7, 4 ou 1
+bigand $i in [1..11]: 
+	chemin(8,$i) => chemin(7,$i+1) or chemin(4,$i+1) or chemin(1,$i+1) 
+end
+
+;; Ici on précise qu'il n'ya qu'un seul chemin possible
+bigand $i in [1..12]:
+	exact(1,chemin([1..8],$i))
+end
+
+;; Ici on précise le noeud départ et le noeud d'arrivé
+chemin(4,1) and chemin(7,12)
