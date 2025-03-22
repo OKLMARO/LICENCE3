@@ -12,4 +12,16 @@ public class Arbre {
       if (racine == null) { return ""; }
       else { return racine.toString(); }
     }
+
+    public boolean testABR(){
+      if (this.racine.v >= this.racine.fd.v && this.racine.v <= this.racine.fg.v) {
+        return false;
+      }
+
+      return testABR(this.racine.fg.v, this.racine.v) && testABR(this.racine.v, this.racine.fd.v);
+    }
+
+    boolean testABR(int min, int max){
+
+    }
 }
