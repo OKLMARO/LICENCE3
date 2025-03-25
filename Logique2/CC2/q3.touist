@@ -1,0 +1,39 @@
+$alice = 1
+$bob = 2
+$dan = 3
+
+$compilation = 1
+$langages = 2
+
+$g1 = 1
+$g2 = 2
+
+$lundi = 1
+$mardi = 2
+
+etudiant($alice, $g1)
+etudiant($bob, $g2)
+etudiant($dan, $g2)
+
+not etudiant($alice, $g2)
+not etudiant($bob, $g1)
+not etudiant($dan, $g1)
+
+UE($langages, $mardi, $g1)
+UE($langages, $mardi, $g2)
+UE($compilation, $mardi, $g1)
+UE($compilation, $lundi, $g2)
+UE($compilation, $mardi, $g1)
+not UE($langages, $lundi, $g1)
+not UE($langages, $lundi, $g2)
+not UE($compilation, $lundi, $g1)
+
+bigand $x in [1..3]:
+	bigor $y in [1..2]:
+		bigor $z in [1..2]:
+			bigand $u in [1..2]:
+				etudiant($x,$z) and UE($u, $y, $z)
+			end
+		end
+	end
+end
