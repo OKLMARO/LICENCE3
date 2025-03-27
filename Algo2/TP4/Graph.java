@@ -69,7 +69,7 @@ public class	Graph
 			res = res + this.sommets.get(i).id + ";\n";
 		for (int i = 0; i < this.sommets.size(); i++) {
 			for (int j = 0; j < this.sommets.get(i).voisins.size(); j++)
-				res = res +this.sommets.get(i).id + "->" + this.sommets.get(i).voisins.get(j) + " [label='" + this.sommets.get(i).voisins.get(j).poids + "'];\n";
+				res = res +this.sommets.get(i).id + "->" + this.sommets.get(i).voisins.get(j).cible + " [label=\"" + this.sommets.get(i).voisins.get(j).poids + "\"];\n";
 		}
 		res = res + "}";
 		return res;
@@ -86,7 +86,7 @@ public class	Graph
 		return false;
 	}
 
-	public double	getNbSommets()
+	public double	getNbSommet()
 	{
 		return this.sommets.size();
 	}
@@ -182,5 +182,52 @@ public class	Graph
 			}
 		}
 		return -1;
+	}
+
+	public double poidsTotal()
+	{
+		double	res;
+
+		res = 0;
+		for (Sommet sommet : sommets) {
+			for (Arrete arrete : sommet.voisins) {
+				res += arrete.poids;
+			}
+		}
+		return (res);
+	}
+
+	public void	initSourceUnique(int s)
+	{
+		for (Sommet sommet : sommets) {
+			sommet.distance = Double.MAX_VALUE;
+			sommet.pi = -1;
+		}
+		sommets.get(s).distance = 0;
+	}
+
+	public void	relacherVoisins(int u)
+	{
+		for (int i = u + 1; i < sommets.size(); i++) 
+		{
+			if (sommets.get(i).distance > sommets.get(u).distance + sommets.get(u).voisins.get(i).poids) 
+			{
+				sommets.get(i).distance = sommets.get(u).distance + sommets.get(u).voisins.get(i).poids;
+				sommets.get(i).pi = sommets.get(u).id;
+			}
+		}
+	}
+
+	public boolean	bellmanFord(int s)
+	{
+		initSourceUnique(s);
+		for (int i = 0; i < sommets.size(); i++) 
+			relacherVoisins(i);
+		for (Sommet sommet : sommets) 
+		{
+			for (Arrete arrete : sommet.voisins) {
+				
+			}
+		}
 	}
 }
