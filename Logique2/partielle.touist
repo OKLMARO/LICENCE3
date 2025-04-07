@@ -1,0 +1,33 @@
+$angie = 1
+$maria = 2
+$rachel = 3
+$vivienne = 4
+
+$pain = 1
+$cafe = 2
+$lessive = 3
+$lait = 4
+
+$depense20 = 1
+$depense30 = 2
+$depense40 = 3
+$depense50 = 4
+
+;;Angie a oublié d'acheter de la lessive.
+not achat($angie, $lessive)
+
+;;La femme qui a dépensé 50 euros est soit Rachel soit celle qui a oublié d'acheter du lait.
+bigor $i in [1..4]: 
+	depense($i, $depense50) => depense($rachel, $depense50) or not achat($i, $lait)
+end
+
+;;Maria a dépensé 30 euros.
+depense($depense30, $maria)
+
+;;Rachel a dépensé 10 euros de moins que la femme qui a oublié d'acheter du café.
+bigor $i in [2..4]: 
+	bigor $j in [1..4]:
+		depense($rachel, $i - 1) => not achat($j, $cafe)
+	end
+end
+
